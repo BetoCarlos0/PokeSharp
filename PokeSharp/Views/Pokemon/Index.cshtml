@@ -1,4 +1,4 @@
-﻿@model PokeSharp.Models.Pokemon.PokeList
+﻿@model PokeSharp.Models.Pokemon.PokeListViewModel
 
 @{
     ViewData["Title"] = "PokeSharp";
@@ -9,14 +9,14 @@
 
 <p>
     @*<a asp-action="Create">Create New</a>*@
+    @ViewBag.teste;
 </p>
+<p>@ViewBag.teste2;</p>
 <form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="Index">Back to Full List</a>
-        </p>
+    <div>
+        <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="pesquisar Pokemon" />
+        <input type="submit" value="Pesquisar" />
+        <a asp-action="Index">Home</a>
     </div>
 </form>
 @{ int count = 0; }
@@ -26,7 +26,7 @@
             <img src="@ViewBag.imgUrl[count++]" />
             <div class="info">
                 <p>@Html.DisplayFor(modelItem => item.Name)</p>
-                <a href="@item.Url">Detalhes</a>
+                @*<a href="@item.Url">Detalhes</a>*@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </div>
             

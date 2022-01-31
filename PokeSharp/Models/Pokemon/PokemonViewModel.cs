@@ -3,7 +3,7 @@ using System;
 
 namespace PokeSharp.Models.Pokemon
 {
-    public class Pokemon
+    public class PokemonViewModel
     {
         [JsonProperty("id")]
         public int Id { get; set; }

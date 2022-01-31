@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PokeSharp.Models.Pokemon
 {
-    public class PokeList
+    public class PokeListViewModel
     {
         [JsonProperty("count")]
         public long Count { get; set; }
@@ -16,6 +16,6 @@ namespace PokeSharp.Models.Pokemon
         public Uri Previous { get; set; }
 
         [JsonProperty("results")]
-        public IEnumerable<Pokemon> Pokemons { get; set; }
+        public IEnumerable<PokemonViewModel> Pokemons { get; set; }
     }
 }
