@@ -8,10 +8,13 @@
 <h1>Pokemons</h1>
 
 <p>
-    @*<a asp-action="Create">Create New</a>*@
-    @ViewBag.teste;
+    @ViewBag.teste
 </p>
-<p>@ViewBag.teste2;</p>
+<p>
+    @ViewData["Offset"]
+    @ViewBag.Page
+</p>
+<p>@ViewBag.teste2</p>
 <form asp-action="Index" method="get">
     <div>
         <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="pesquisar Pokemon" />
@@ -29,8 +32,31 @@
                 @*<a href="@item.Url">Detalhes</a>*@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </div>
-            
-            @*<a asp-action="Details" asp-route-id="@item.">Details</a>*@
         </div>
     }
+</div>
+@{
+    //string offsetPrev = "";
+    //string offsetNex = "";
+    //string nextDisabled = "";
+    if(!(Model.Previous == null))
+    {
+        //ViewBag.Offset = Model.Previous.Query;
+    }
+    if(!(Model.Next == null))
+    {
+        ViewBag.Offset = Model.Next.Query;
+    }
+
+    var prevDisabled = (Model.Previous == null) ? "disabled" : "";
+    var nextDisabled = (Model.Next == null) ? "disabled" : "";
+}
+<div class="pag">
+    <a asp-action="Index"
+    asp-route-offset="@ViewBag.Offset"
+    asp-route-page="@(ViewBag.Page - 1)" value="" class="btn @prevDisabled">Anterior</a>
+
+    <a asp-action="Index"
+    asp-route-offset=""
+    asp-route-page="@(ViewBag.Page + 1)" value="@ViewData["Offset"]" class="btn @nextDisabled">Próximo</a>
 </div>

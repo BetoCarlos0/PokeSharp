@@ -1,80 +1,85 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PokeSharp.Models.Pokemon;
-using RestSharp;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using PokeSharp.Services;
+using RestSharp;
 
 namespace PokeSharp.Controllers
 {
     public class PokemonController : Controller
     {
-        private readonly IPokeListServices _pokeListServices;
-
-        public PokemonController(IPokeListServices iPokeListServices)
-        {
-            _pokeListServices = iPokeListServices;
-        }
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string offset, int? page)
         {
             ViewData["CurrentFilter"] = searchString;
+            ViewData["Offset"] = offset;
 
-            //PokeListViewModel pokeList = new PokeListViewModel();
+            if(page == null)
+            {
+                ViewBag.Page = 0;
+            }else
+            {
+                ViewBag.Page = page;
+            }
+            
 
-            //if (!String.IsNullOrEmpty(searchString))
-            //{
-            //    RestClient client = new RestClient("https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0");
-            //    RestRequest request = new RestRequest();
-            //    RestResponse response = await client.ExecuteAsync(request);
-            //    if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            //    {
-            //        ModelState.AddModelError("", "Erro!");
-            //    }
-            //    else
-            //    {
-            //        pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(response.Content);
-            //    }
+            //ViewBag.PageNum = pageNum ? pageNum : "";
 
-            //    pokeList.Pokemons = pokeList.Pokemons.Where(s => s.Name.Contains(searchString));
-            //}
-            //else
-            //{
-            //    RestClient client = new RestClient("https://pokeapi.co/api/v2/pokemon?offset=0&limit=24");
-            //    RestRequest request = new RestRequest();
-            //    RestResponse response = await client.ExecuteAsync(request);
+            PokeListViewModel pokeList = new PokeListViewModel();
 
-            //    ViewBag.teste = response.Content;
-            //    JObject o = JObject.Parse(response.Content);
-            //    string productName = (string)o.SelectToken("results[0].name");
-            //    ViewBag.teste2 = productName;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                RestClient client = new RestClient("https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0");
+                RestRequest request = new RestRequest();
+                RestResponse response = await client.ExecuteAsync(request);
+                if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    ModelState.AddModelError("", "Erro!");
+                }
+                else
+                {
+                    pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(response.Content);
+                }
 
-            //    if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            //    {
-            //        ModelState.AddModelError("", "Erro!");
-            //    }
-            //    else
-            //    {
-            //        pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(response.Content);
-            //    }
-            //}
+                pokeList.Pokemons = pokeList.Pokemons.Where(s => s.Name.Contains(searchString));
+            }
+            else
+            {
+                RestClient client = new RestClient("https://pokeapi.co/api/v2/pokemon?offset=0&limit=24");
+                RestRequest request = new RestRequest();
+                RestResponse response = await client.ExecuteAsync(request);
 
-            //string[] imgs = new string[pokeList.Pokemons.Count()];
-            //int count = 1;
-            //foreach (var item in pokeList.Pokemons)
-            //{
-            //    string temp = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + count + ".png";
+                ViewBag.teste = response.Content;
+                JObject o = JObject.Parse(response.Content);
+                string productName = (string)o.SelectToken("results[0].name");
+                ViewBag.teste2 = productName;
 
-            //    imgs[count - 1] = temp;
-            //    count++;
-            //}
-            //ViewBag.imgUrl = imgs;
-            var pokeList = await _pokeListServices.List();
+                if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    ModelState.AddModelError("", "Erro!");
+                }
+                else
+                {
+                    pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(response.Content);
+                }
+            }
+
+            //ViewBag.Id = GetId();
+
+            string[] imgs = new string[pokeList.Pokemons.Count()];
+            int count = 1;
+            foreach (var item in pokeList.Pokemons)
+            {
+                string temp = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + count + ".png";
+
+                imgs[count - 1] = temp;
+                count++;
+            }
+            ViewBag.imgUrl = imgs;
 
             return View(pokeList);
-            //return View(pokeList);
         }
 
         public IActionResult Details(int? id)
@@ -85,5 +90,10 @@ namespace PokeSharp.Controllers
 
             return View(pokemon);
         }
+
+        /*public void GetId()
+        {
+            return ViewBag.id;  
+        }*/
     }
 }
