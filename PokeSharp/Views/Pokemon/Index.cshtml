@@ -53,10 +53,8 @@
 }
 <div class="pag">
     <a asp-action="Index"
-    asp-route-offset="@ViewBag.Offset"
-    asp-route-page="@(ViewBag.Page - 1)" value="" class="btn @prevDisabled">Anterior</a>
+    asp-route-page="@(ViewBag.Page - 1)" class="btn @prevDisabled">Anterior</a>
 
     <a asp-action="Index"
-    asp-route-offset=""
-    asp-route-page="@(ViewBag.Page + 1)" value="@ViewData["Offset"]" class="btn @nextDisabled">Próximo</a>
+    asp-route-page="@(ViewBag.Page + 1)" class="btn @nextDisabled">Próximo</a>
 </div>
