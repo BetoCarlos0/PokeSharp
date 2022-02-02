@@ -11,74 +11,50 @@ namespace PokeSharp.Controllers
 {
     public class PokemonController : Controller
     {
-        public async Task<IActionResult> Index(string searchString, string offset, int? page)
+        public async Task<IActionResult> Index(string searchString, int? page)
         {
+            int limit = 24;
+
             ViewData["CurrentFilter"] = searchString;
-            ViewData["Offset"] = offset;
-
-            if(page == null)
-            {
-                ViewBag.Page = 0;
-            }else
-            {
-                ViewBag.Page = page;
-            }
-            
-
-            //ViewBag.PageNum = pageNum ? pageNum : "";
+            string UrlBase = "https://pokeapi.co/api/v2/";
 
             PokeListViewModel pokeList = new PokeListViewModel();
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (page == null)
             {
-                RestClient client = new RestClient("https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0");
-                RestRequest request = new RestRequest();
-                RestResponse response = await client.ExecuteAsync(request);
-                if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    ModelState.AddModelError("", "Erro!");
-                }
-                else
-                {
-                    pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(response.Content);
-                }
-
-                pokeList.Pokemons = pokeList.Pokemons.Where(s => s.Name.Contains(searchString));
+                page = 0;
             }
             else
             {
-                RestClient client = new RestClient("https://pokeapi.co/api/v2/pokemon?offset=0&limit=24");
-                RestRequest request = new RestRequest();
-                RestResponse response = await client.ExecuteAsync(request);
-
-                ViewBag.teste = response.Content;
-                JObject o = JObject.Parse(response.Content);
-                string productName = (string)o.SelectToken("results[0].name");
-                ViewBag.teste2 = productName;
-
-                if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    ModelState.AddModelError("", "Erro!");
-                }
-                else
-                {
-                    pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(response.Content);
-                }
+                page -= 1;
             }
 
-            //ViewBag.Id = GetId();
+            if(page * limit > 898)
+            {
+
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(UrlBase +"pokemon?limit=1118&offset=0"));
+
+                pokeList.Pokemons = pokeList.Pokemons.Where(s => s.Name.Contains(searchString));
+
+
+            }
+            else
+            {
+                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(UrlBase + "pokemon?offset=" + page * limit +"&limit="+ limit));
+            }
 
             string[] imgs = new string[pokeList.Pokemons.Count()];
-            int count = 1;
+            int count = ((int)page * limit);
             foreach (var item in pokeList.Pokemons)
             {
-                string temp = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + count + ".png";
-
-                imgs[count - 1] = temp;
-                count++;
+                item.Img = new Uri("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + ++count + ".png");
+                item.Id = count;
             }
-            ViewBag.imgUrl = imgs;
-
+            ViewBag.Page = page + 1;
             return View(pokeList);
         }
 
@@ -91,9 +67,18 @@ namespace PokeSharp.Controllers
             return View(pokemon);
         }
 
-        /*public void GetId()
+        public async Task<string> GetRresponse(string url)
         {
-            return ViewBag.id;  
-        }*/
+            RestClient client = new RestClient(url);
+            RestRequest request = new RestRequest();
+            RestResponse response = await client.ExecuteAsync(request);
+
+            if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                ModelState.AddModelError("", "Erro!");
+            }
+
+            return response.Content;  
+        }
     }
 }

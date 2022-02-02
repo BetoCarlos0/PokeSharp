@@ -8,13 +8,9 @@
 <h1>Pokemons</h1>
 
 <p>
-    @ViewBag.teste
-</p>
-<p>
-    @ViewData["Offset"]
     @ViewBag.Page
 </p>
-<p>@ViewBag.teste2</p>
+
 <form asp-action="Index" method="get">
     <div>
         <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="pesquisar Pokemon" />
@@ -22,34 +18,23 @@
         <a asp-action="Index">Home</a>
     </div>
 </form>
-@{ int count = 0; }
 <div class="wrapper">
     @foreach (var item in Model.Pokemons) {
         <div>
-            <img src="@ViewBag.imgUrl[count++]" />
+            <img src="@item.Img" />
             <div class="info">
                 <p>@Html.DisplayFor(modelItem => item.Name)</p>
-                @*<a href="@item.Url">Detalhes</a>*@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </div>
         </div>
     }
 </div>
 @{
-    //string offsetPrev = "";
-    //string offsetNex = "";
-    //string nextDisabled = "";
-    if(!(Model.Previous == null))
-    {
-        //ViewBag.Offset = Model.Previous.Query;
-    }
-    if(!(Model.Next == null))
-    {
-        ViewBag.Offset = Model.Next.Query;
-    }
+    //var offsetPrev = !(Model.Previous == null) ? Model.Previous.Query : "";
+    //var offsetNex = !(Model.Next == null) ? Model.Next.Query : "";
 
-    var prevDisabled = (Model.Previous == null) ? "disabled" : "";
-    var nextDisabled = (Model.Next == null) ? "disabled" : "";
+    var prevDisabled = (ViewBag.Page <= 1) ? "disabled" : "";
+    var nextDisabled = (ViewBag.Page == 0) ? "disabled" : "";
 }
 <div class="pag">
     <a asp-action="Index"
