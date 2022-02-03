@@ -15,7 +15,7 @@ namespace PokeSharp.Models.Pokemon
         public int Id { get; set; }
 
         [JsonProperty("front_default")]
-        public Uri Img { get; set; }
+        public string Img { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }

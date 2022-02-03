@@ -7,21 +7,16 @@
 
 <h1>Pokemons</h1>
 
-<p>
-    @ViewBag.Page
-</p>
-
-<form asp-action="Index" method="get">
-    <div>
-        <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" placeholder="pesquisar Pokemon" />
-        <input type="submit" value="Pesquisar" />
-        <a asp-action="Index">Home</a>
-    </div>
-</form>
 <div class="wrapper">
     @foreach (var item in Model.Pokemons) {
         <div>
-            <img src="@item.Img" />
+            @if(item.Img == null)
+            {
+                <img id="listpoke" src="~/images/interrogacao.png" />
+            }else{
+                <img id="listpoke" src="@item.Img" />
+            }
+           
             <div class="info">
                 <p>@Html.DisplayFor(modelItem => item.Name)</p>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
@@ -34,9 +29,9 @@
     //var offsetNex = !(Model.Next == null) ? Model.Next.Query : "";
 
     var prevDisabled = (ViewBag.Page <= 1) ? "disabled" : "";
-    var nextDisabled = (ViewBag.Page == 0) ? "disabled" : "";
+    var nextDisabled = (ViewBag.Page * ViewBag.limit >= 1118) ? "disabled" : "";
 }
-<div class="pag">
+<div class="pag @ViewBag.Hidden">
     <a asp-action="Index"
     asp-route-page="@(ViewBag.Page - 1)" class="btn @prevDisabled">Anterior</a>
 

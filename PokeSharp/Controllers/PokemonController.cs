@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System.Net;
 
 namespace PokeSharp.Controllers
 {
@@ -13,26 +14,23 @@ namespace PokeSharp.Controllers
     {
         public async Task<IActionResult> Index(string searchString, int? page)
         {
-            int limit = 24;
-
+            int limit = 36;
+            ViewBag.limit = limit;
             ViewData["CurrentFilter"] = searchString;
             string UrlBase = "https://pokeapi.co/api/v2/";
 
             PokeListViewModel pokeList = new PokeListViewModel();
 
-            if (page == null)
+            /*if (page == null)
             {
                 page = 0;
             }
             else
             {
                 page -= 1;
-            }
+            }*/
 
-            if(page * limit > 898)
-            {
-
-            }
+            page = (page == null) ? 0 : (page - 1);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -40,21 +38,37 @@ namespace PokeSharp.Controllers
 
                 pokeList.Pokemons = pokeList.Pokemons.Where(s => s.Name.Contains(searchString));
 
+                pokeList = await GetImageSr(pokeList);
 
+                ViewBag.Hidden = "d-none";
+
+                return View(pokeList);
             }
             else
             {
-                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(UrlBase + "pokemon?offset=" + page * limit +"&limit="+ limit));
+                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(UrlBase + "pokemon?offset=" + page * limit + "&limit=" + limit));
+
+                int count = (int)page * limit;
+                int skip = 9102 + count;
+                foreach (var item in pokeList.Pokemons)
+                {
+                    if (count < 898)
+                    {
+                        item.Img = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + ++count + ".png";
+                        item.Id = count;
+                        ++skip;
+                    }
+                    else
+                    {
+                        item.Img = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + ++skip + ".png";
+                        item.Id = skip;
+                    }
+                }
             }
 
-            string[] imgs = new string[pokeList.Pokemons.Count()];
-            int count = ((int)page * limit);
-            foreach (var item in pokeList.Pokemons)
-            {
-                item.Img = new Uri("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + ++count + ".png");
-                item.Id = count;
-            }
+            
             ViewBag.Page = page + 1;
+
             return View(pokeList);
         }
 
@@ -65,6 +79,33 @@ namespace PokeSharp.Controllers
             var pokemon = new PokemonViewModel();
 
             return View(pokemon);
+        }
+        public async Task<PokeListViewModel> GetImageSr(PokeListViewModel pokemon)
+        {
+            foreach (var item in pokemon.Pokemons)
+            {
+                string response = await GetRresponse("https://pokeapi.co/api/v2/pokemon/" + item.Name);
+
+                item.Img = GetImageUrl(response);
+                item.Id = GetIdPoke(response);
+            }
+
+            string GetImageUrl(string response)
+            {
+                JObject jsonO = JObject.Parse(response);
+                string json = (string)jsonO.SelectToken("sprites.other.official-artwork.front_default");
+                
+                return json;
+            }
+
+            int GetIdPoke(string response)
+            {
+                JObject jsonO = JObject.Parse(response);
+                int json = (int)jsonO.SelectToken("id");
+
+                return json;
+            }
+            return pokemon;
         }
 
         public async Task<string> GetRresponse(string url)
