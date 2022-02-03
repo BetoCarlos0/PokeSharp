@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace PokeSharp.Models.Pokemon
 {
     public class PokemonViewModel
     {
+        [JsonProperty("abilities")]
+        public IEnumerable<AbilitiesViewModel> Abilities { get; set; }
+
         [JsonProperty("base_experience")]
         public int BaseExp { get; set;}
 

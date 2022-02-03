@@ -12,23 +12,14 @@ namespace PokeSharp.Controllers
 {
     public class PokemonController : Controller
     {
+        string UrlBase = "https://pokeapi.co/api/v2/";
         public async Task<IActionResult> Index(string searchString, int? page)
         {
             int limit = 36;
             ViewBag.limit = limit;
             ViewData["CurrentFilter"] = searchString;
-            string UrlBase = "https://pokeapi.co/api/v2/";
 
             PokeListViewModel pokeList = new PokeListViewModel();
-
-            /*if (page == null)
-            {
-                page = 0;
-            }
-            else
-            {
-                page -= 1;
-            }*/
 
             page = (page == null) ? 0 : (page - 1);
 
@@ -65,18 +56,19 @@ namespace PokeSharp.Controllers
                     }
                 }
             }
-
             
             ViewBag.Page = page + 1;
 
             return View(pokeList);
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
 
-            var pokemon = new PokemonViewModel();
+            PokemonViewModel pokemon = new PokemonViewModel();
+
+            pokemon = JsonConvert.DeserializeObject<PokemonViewModel>(await GetRresponse(UrlBase + "pokemon/" + id));
 
             return View(pokemon);
         }

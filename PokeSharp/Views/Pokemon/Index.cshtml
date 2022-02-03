@@ -19,15 +19,12 @@
            
             <div class="info">
                 <p>@Html.DisplayFor(modelItem => item.Name)</p>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Datalhes</a>
             </div>
         </div>
     }
 </div>
 @{
-    //var offsetPrev = !(Model.Previous == null) ? Model.Previous.Query : "";
-    //var offsetNex = !(Model.Next == null) ? Model.Next.Query : "";
-
     var prevDisabled = (ViewBag.Page <= 1) ? "disabled" : "";
     var nextDisabled = (ViewBag.Page * ViewBag.limit >= 1118) ? "disabled" : "";
 }
