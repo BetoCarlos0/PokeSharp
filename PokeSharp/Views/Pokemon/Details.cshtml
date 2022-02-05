@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h2>Detalhes</h2>
 <div class="details">
     <div class="img-details">
         @if(Model.Sprites.Other.OfficialArtwork.FrontDefault == null)
@@ -17,11 +17,35 @@
     </div>
     <div class="info-details">
         <h1>@Model.Name</h1>
-        @foreach (var types in Model.Types)
-        {
-            <img src="~/images/types/@(types.Type.Name).png">
-            <a href="@types.Type.Url" >@types.Type.Name</a>
-        }
+        <div class="types card">
+            <p class="titles">Type</p>
+            <div class="sub-card">
+                @foreach (var types in Model.Types)
+                {
+                <a href="@types.Type.Url" >@types.Type.Name
+                    <img src="~/images/types/@(types.Type.Name).png">
+                </a>
+            }
+            </div>
+        </div>
+        <div class="ability card">
+            <p class="titles">Abilities</p>
+            <div class="sub-card">
+                @foreach (var ability in Model.Abilities)
+                {
+                    if(@ability.IsHidden == false)
+                    {
+                        <img src="~/images/visible.png" alt="">
+                        <a href="@ability.Ability.Url">@Html.DisplayFor(model => ability.Ability.Name)</a>
+                    }
+                    if(@ability.IsHidden == true)
+                    {
+                        <img src="~/images/hidden.png" alt="">
+                        <a href="@ability.Ability.Url">@Html.DisplayFor(model => ability.Ability.Name)</a>
+                    }
+                }
+            </div>
+        </div>
         
     </div>
 </div>
