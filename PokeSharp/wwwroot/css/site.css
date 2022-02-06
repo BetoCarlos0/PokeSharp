@@ -216,7 +216,7 @@ form input[type="submit"] {
 
 /* ======================================= */
 .card {
-  height: 70px;
+  height: 60px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -258,5 +258,5 @@ form input[type="submit"] {
 .types {
 }
 .types img {
-  height: 40px;
+  height: 30px;
 }
