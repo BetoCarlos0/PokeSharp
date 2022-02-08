@@ -18,10 +18,9 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
-a {
-  color: #000;
+a:hover{
+  text-decoration: none;
 }
-
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -214,49 +213,129 @@ form input[type="submit"] {
   border-bottom: 2px solid var(--blue-2);
 }
 
-/* ======================================= */
-.card {
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 1.4rem;
-  border-width: 0px;
-  margin-bottom: 8px;
-  background-color: var(--blue);
-}
-.card p{
-  margin: 0px;
-}
-.card .titles{
-  color: var(--yellow);
-  font-weight: 600;
-  margin: 0px 15px;
-}
-.sub-card{
-  display: flex;
-  gap: 30px;
-  flex: 1;
-  background-color: #fff;
-  padding: 0 15px;
-}
-
-.details{
-  display: flex;
-  margin: 20px;
-  gap: 30px;
-}
-.img-details img {
-  max-width: 400px;
-}
-.info-details{
-  flex: 1;
-}
+/* ============DETAILS================= */
 .info-details h1{
   text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 600;
+  position: relative;
+  width: max-content;
 }
-.types {
+.info-details h1 > span{
+  font-size: 1rem;
+  position: absolute;
+  top: 5px;
+  color: var(--yellow);
 }
-.types img {
-  height: 30px;
+.img-details img{
+  width: 400px;
+}
+.details{
+  display: flex;
+  gap: 30px;
+}
+.info-details {
+  flex: 1;
+}
+.table-info{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px 10px;
+  background-color: #ffffff00;
+  font-size: 1.1rem;
+}
+.table-info tr{
+  height: 40px;
+  border: 2px solid var(--blue);
+}
+.table-info tr td{
+  padding: 0 15px;
+  border: 2px solid var(--blue);
+}
+.table-info tr .t-header{
+  width: 170px;
+  background-color: var(--blue);
+  color: var(--yellow);
+  font-weight: 600;
+  font-size: 1.2rem;
+  border-radius: 8px 0 0 8px;
+}
+.table-info tr .t-body{
+  display: flex;
+  height: inherit;
+  gap: 25px;
+  align-items: center;
+  background-color: #e4f0ff;
+  border-radius: 0 8px 8px 0;
+}
+.table-info tr .t-body div{
+  background-color: #a5c3e7;
+  border: 1px solid var(--blue);
+  border-radius: 4px;
+  padding: 0px 8px;
+  color: var(--blue-2);
+}
+.table-info tr td svg{
+  height: 14px;
+}
+.table-info tr td img{
+  height: 22px;
+}
+.table-info p{
+  margin: 0;
+}
+/* ==========DETAILS/graphic============= */
+.stats{
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
+}
+.stats .graphics{
+  position: relative;
+}
+
+.stats p {
+  position: absolute;
+}
+.stats p.title{
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--blue);
+  line-height: 18px;
+}
+.stats p.title span{
+  color: var(--yellow);
+  font-size: 1.6rem;
+}
+.stats .hp{
+  left: 175px;
+  top: -20px;
+}
+.stats .attack{
+  left: -50px;
+  top: 80px;
+  width: 50px;
+  line-break: normal;
+}
+.stats .defense{
+  left: -65px;
+  top: 280px;
+  width: 50px;
+  line-break: normal;
+}
+.stats .special-attack{
+  left: 130px;
+  top: 400px;
+}
+.stats .special-defense{
+  left: 410px;
+  top: 280px;
+  width: 50px;
+  line-break: normal;
+}
+.stats .speed{
+  left: 410px;
+  top: 80px;
+  width: 50px;
+  line-break: normal;
 }

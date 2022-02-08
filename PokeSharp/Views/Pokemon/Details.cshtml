@@ -6,6 +6,9 @@
 }
 
 <h2>Detalhes</h2>
+<div>
+    <a asp-action="Index">Voltar para Lista</a>
+</div>
 <div class="details">
     <div class="img-details">
         @if(Model.Sprites.Other.OfficialArtwork.FrontDefault == null)
@@ -14,76 +17,104 @@
         }else{
             <img id="listpoke" src="@Model.Sprites.Other.OfficialArtwork.FrontDefault" />
         }
+        <div>
+            @Model.BaseExp
+        </div>
     </div>
     <div class="info-details">
-        <h1>@Model.Name</h1>
-        <div class="types card">
-            <p class="titles">Type</p>
-            <div class="sub-card">
-                @foreach (var types in Model.Types)
-                {
-                <a href="@types.Type.Url" >@types.Type.Name
-                    <img src="~/images/types/@(types.Type.Name).png">
-                </a>
-            }
+        <h1>@Model.Name <span>#@Model.Id</span></h1>
+        
+        <div>
+            <table class="table-info">
+                <tbody>
+                    <tr>
+                        <td class="t-header"><p class="titles">Abilities</p></td>
+                        <td class="t-body">
+                        @foreach (var ability in Model.Abilities)
+                        {
+                            if(@ability.IsHidden == false)
+                            {
+                            <div>
+                                <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="eye" class="svg-inline--fa fa-eye" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M572.5 238.1C518.3 115.5 410.9 32 288 32S57.69 115.6 3.469 238.1C1.563 243.4 0 251 0 256c0 4.977 1.562 12.6 3.469 17.03C57.72 396.5 165.1 480 288 480s230.3-83.58 284.5-206.1C574.4 268.6 576 260.1 576 256C576 251 574.4 243.4 572.5 238.1zM288 432c-99.48 0-191.2-67.5-239.6-175.1C97.01 147.4 188.6 80 288 80c99.48 0 191.2 67.5 239.6 175.1C478.1 364.6 387.4 432 288 432zM288 128C217.3 128 160 185.3 160 256s57.33 128 128 128c70.64 0 128-57.32 128-127.9C416 185.4 358.7 128 288 128zM288 336c-44.11 0-80-35.89-80-80c0-.748 .1992-1.441 .2207-2.184C213.3 255.1 218.5 256 224 256c35.35 0 64-28.65 64-64c0-5.48-.875-10.72-2.184-15.78C286.6 176.2 287.3 176 288 176c44.11 0 80 35.89 80 80.05C368 300.1 332.1 336 288 336z"></path></svg>
+                                <a href="@ability.Ability.Url">@Html.DisplayFor(model => ability.Ability.Name)</a>
+                            </div>
+                            }
+                            if(@ability.IsHidden == true)
+                            {
+                            <div>
+                                <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="eye-slash" class="svg-inline--fa fa-eye-slash" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M630.8 469.1l-103.5-81.11c31.35-31.94 57.79-70.78 77.21-114.1c1.906-4.43 3.469-12.07 3.469-17.03c0-4.977-1.562-12.6-3.469-17.03c-54.25-123.4-161.6-206.1-284.5-206.1c-62.67 0-121.2 21.95-170.8 59.62L38.81 5.116C34.41 1.679 29.19 0 24.03 0C16.91 0 9.839 3.158 5.121 9.189c-8.188 10.44-6.37 25.53 4.068 33.7l591.1 463.1c10.5 8.203 25.57 6.333 33.69-4.073C643.1 492.4 641.2 477.3 630.8 469.1zM394.4 283.8l-81.65-63.1C316.1 211.3 319.1 202.2 319.1 192c0-5.48-.8744-10.73-2.183-15.78C318.6 176.2 319.3 176 320 176c44.11 0 80 35.89 80 80.05C400 265.9 397.7 275.1 394.4 283.8zM433.2 314.2C442.4 296.8 448 277.2 448 256.1C448 185.4 390.7 128 320 128C287.8 128 258.7 140.2 236.3 159.9L188.3 122.3C228 95.03 273.1 80 320 80c99.48 0 191.2 67.5 239.6 175.1c-18.06 40.38-42.41 74.43-70.61 101.9L433.2 314.2zM320 384c13.42 0 26.16-2.643 38.31-6.477L302.8 334C279.1 328.8 259.5 312.9 248.8 291.7L192.8 247.8C192.6 250.6 192 253.2 192 256C192 326.7 249.3 384 320 384zM320 432c-99.48 0-191.2-67.5-239.6-175.1c10.83-24.22 24.09-46.03 38.81-65.86L81.28 160.4c-17.77 23.74-33.27 50.04-45.81 78.59C33.56 243.4 31.1 251 31.1 256c0 4.977 1.562 12.6 3.469 17.03c54.25 123.4 161.6 206.1 284.5 206.1c45.46 0 88.77-11.49 128.1-32.14l-42.87-33.59C378 425.4 349.5 432 320 432z"></path></svg>
+                                <a href="@ability.Ability.Url">@Html.DisplayFor(model => ability.Ability.Name)</a>
+                            </div>
+                            }
+                        }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="t-header"><p class="titles">Type</p></td>
+                        <td class="t-body">
+                            @foreach (var types in Model.Types)
+                            {
+                            <div>
+                                <a href="@types.Type.Url" >@types.Type.Name
+                                    <img src="~/images/types/@(types.Type.Name).png">
+                                </a>
+                            </div>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table-info">
+                <tbody>
+                    <tr>
+                        <td class="t-header"><p class="titles">@Html.DisplayNameFor(model => model.Height)</p></td>
+                        <td class="t-body"><div>@Model.Height</div></td>
+                        <td class="t-header"><p class="titles">@Html.DisplayNameFor(model => model.Weight)</p></td>
+                        <td class="t-body"><div>@Model.Weight</div></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="stats">
+                <div class="graphics">
+
+                    @foreach(var item in Model.Stats)
+                    {
+                        <p class="@item.StatStat.Name title">@item.StatStat.Name
+                            <span>@item.BaseStat</span>
+                        </p>                        
+                    }
+                    <svg width="100%" height="400" viewBox="0 10 380 380">
+                        @{
+                            int count = 0;
+                            int widht = 5;
+                            int[] points = new int[6];
+                        } 
+                        @for(int i = 400, j = 0, k = 110, x=270; i > 200; i-=20, j+=20, k+=5, x-=10)
+                        {
+                            @* <polygon points="170,@j @(j+17),@k @(j+17),@x 170,@i @(i-17),@x @(i-17),@k"
+                            style="fill:#ffffff00;stroke:#dce1fd;stroke-width:@widht;fill-rule:evenodd;" />
+                            widht = 2; *@
+                            <polygon points="@(i-20),200 @x,@(i-10) @k,@(i-10) @j,200 @k,@(j+20) @x,@(j+20)" style="fill:#ffffff00;stroke:#dce1fd;stroke-width:@widht"></polygon>
+                            widht = 2;
+                        }
+                        @foreach(var item in Model.Stats)
+                        {
+                            points[count++] = item.BaseStat;
+                        }
+                        @* <polygon points="170,@(170-points[0]) @(170-points[1]),@(220-points[1]-10) 20,220 170,@(170+points[3]) 280,220 280,80"
+                        style="fill:#ffffff00;stroke:#3088F0;stroke-width:2;fill-rule:evenodd;" /> *@
+                        Sorry, your browser does not support inline SVG.
+                    </svg>
+                    <svg style="position:relative;bottom:350px;left:65px" id="color-fill" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="300" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    
+                    <polygon class="hex" points="300,150 225,280 75,280 0,150 75,20 225,20" style="fill:#ffffff00;stroke:#aae1ff;stroke-width:2"></polygon>
+                    
+                    </svg>
+                </div>
             </div>
         </div>
-        <div class="ability card">
-            <table>
-                <tr>
-                    <td><p class="titles">Abilities</p></td>
-                    <td>
-                    @foreach (var ability in Model.Abilities)
-                    {
-                        if(@ability.IsHidden == false)
-                        {
-                            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="eye" class="svg-inline--fa fa-eye" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M572.5 238.1C518.3 115.5 410.9 32 288 32S57.69 115.6 3.469 238.1C1.563 243.4 0 251 0 256c0 4.977 1.562 12.6 3.469 17.03C57.72 396.5 165.1 480 288 480s230.3-83.58 284.5-206.1C574.4 268.6 576 260.1 576 256C576 251 574.4 243.4 572.5 238.1zM288 432c-99.48 0-191.2-67.5-239.6-175.1C97.01 147.4 188.6 80 288 80c99.48 0 191.2 67.5 239.6 175.1C478.1 364.6 387.4 432 288 432zM288 128C217.3 128 160 185.3 160 256s57.33 128 128 128c70.64 0 128-57.32 128-127.9C416 185.4 358.7 128 288 128zM288 336c-44.11 0-80-35.89-80-80c0-.748 .1992-1.441 .2207-2.184C213.3 255.1 218.5 256 224 256c35.35 0 64-28.65 64-64c0-5.48-.875-10.72-2.184-15.78C286.6 176.2 287.3 176 288 176c44.11 0 80 35.89 80 80.05C368 300.1 332.1 336 288 336z"></path></svg>
-                            <a href="@ability.Ability.Url">@Html.DisplayFor(model => ability.Ability.Name)</a>
-                        }
-                        if(@ability.IsHidden == true)
-                        {
-                            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="eye-slash" class="svg-inline--fa fa-eye-slash" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M630.8 469.1l-103.5-81.11c31.35-31.94 57.79-70.78 77.21-114.1c1.906-4.43 3.469-12.07 3.469-17.03c0-4.977-1.562-12.6-3.469-17.03c-54.25-123.4-161.6-206.1-284.5-206.1c-62.67 0-121.2 21.95-170.8 59.62L38.81 5.116C34.41 1.679 29.19 0 24.03 0C16.91 0 9.839 3.158 5.121 9.189c-8.188 10.44-6.37 25.53 4.068 33.7l591.1 463.1c10.5 8.203 25.57 6.333 33.69-4.073C643.1 492.4 641.2 477.3 630.8 469.1zM394.4 283.8l-81.65-63.1C316.1 211.3 319.1 202.2 319.1 192c0-5.48-.8744-10.73-2.183-15.78C318.6 176.2 319.3 176 320 176c44.11 0 80 35.89 80 80.05C400 265.9 397.7 275.1 394.4 283.8zM433.2 314.2C442.4 296.8 448 277.2 448 256.1C448 185.4 390.7 128 320 128C287.8 128 258.7 140.2 236.3 159.9L188.3 122.3C228 95.03 273.1 80 320 80c99.48 0 191.2 67.5 239.6 175.1c-18.06 40.38-42.41 74.43-70.61 101.9L433.2 314.2zM320 384c13.42 0 26.16-2.643 38.31-6.477L302.8 334C279.1 328.8 259.5 312.9 248.8 291.7L192.8 247.8C192.6 250.6 192 253.2 192 256C192 326.7 249.3 384 320 384zM320 432c-99.48 0-191.2-67.5-239.6-175.1c10.83-24.22 24.09-46.03 38.81-65.86L81.28 160.4c-17.77 23.74-33.27 50.04-45.81 78.59C33.56 243.4 31.1 251 31.1 256c0 4.977 1.562 12.6 3.469 17.03c54.25 123.4 161.6 206.1 284.5 206.1c45.46 0 88.77-11.49 128.1-32.14l-42.87-33.59C378 425.4 349.5 432 320 432z"></path></svg>
-                            <a href="@ability.Ability.Url">@Html.DisplayFor(model => ability.Ability.Name)</a>
-                        }
-                    }
-                    </td>
-                </tr>
-            </table>
-        </div>
     </div>
 </div>
-<div>
-    <h4>Pokemon</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Height)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Height)
-        </dd>
-    </dl>
-</div>
-@foreach (var item in Model.Abilities) {
-    <div class="info">
-        <p>@Html.DisplayNameFor(modelitem => item.Ability.Name)</p>
-        <p>@Html.DisplayFor(modelItem => item.Ability.Name)</p>
-
-        @*<a asp-action="Details" asp-route-id="@item.Id">Datalhes</a>*@
-    </div>
-}
 <div>
     <a asp-action="Index">Voltar para Lista</a>
 </div>

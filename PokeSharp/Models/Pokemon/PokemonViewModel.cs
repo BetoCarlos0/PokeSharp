@@ -54,7 +54,7 @@ namespace PokeSharp.Models.Pokemon
         [JsonProperty("url")]
         public string Url { get; set; }
 
-        [JsonProperty("wight")]
+        [JsonProperty("weight")]
         public int Weight { get; set; }
     }
 
@@ -353,10 +353,10 @@ namespace PokeSharp.Models.Pokemon
     public class Stat
     {
         [JsonProperty("base_stat")]
-        public long BaseStat { get; set; }
+        public int BaseStat { get; set; }
 
         [JsonProperty("effort")]
-        public long Effort { get; set; }
+        public int Effort { get; set; }
 
         [JsonProperty("stat")]
         public Species StatStat { get; set; }
@@ -365,7 +365,7 @@ namespace PokeSharp.Models.Pokemon
     public class TypeElement
     {
         [JsonProperty("slot")]
-        public long Slot { get; set; }
+        public int Slot { get; set; }
 
         [JsonProperty("type")]
         public Species Type { get; set; }
