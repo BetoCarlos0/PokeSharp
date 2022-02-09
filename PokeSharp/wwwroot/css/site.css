@@ -4,7 +4,7 @@ for details on configuring this project to bundle and minify static web assets. 
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Source Sans Pro', sans-serif;
+    
 }
 :root{
   --blue: #3088F0;
@@ -66,12 +66,30 @@ html {
   position: relative;
   min-height: 100%;
 }
+/* ==============header================ */
 header {
   display: flex;
   justify-content: space-between;
   height: 100px;
   display: flex;
   align-items: center;
+}
+header .nav-menu{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+header .logo{
+  font-weight: 700;
+  font-size: 2rem;
+}
+header .menu{
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+header .menu a:hover{
+  background-color: #8bbfff;
+  border-radius: 8px;
 }
 
 body {
@@ -107,6 +125,9 @@ form input[type="text"]{
   width: 250px;
   outline-style: none;
 }
+form input::placeholder{
+  color: #8bbfff;
+}
 form input[type="text"]:hover{
   border-color: var(--blue-2);
 }
@@ -122,6 +143,7 @@ form button{
   border-bottom: 6px solid var(--blue-2);
   margin-left: 10px;
   outline-style: none;
+  font-weight: 600;
 }
 form button:hover {
   border-bottom: 4px solid var(--blue-2);
@@ -214,6 +236,13 @@ form input[type="submit"] {
 }
 
 /* ============DETAILS================= */
+.back-list a{
+  padding: 6px 13px;
+}
+.back-list a:hover{
+  background-color: #8bbfff;
+  border-radius: 8px;
+}
 .info-details h1{
   text-transform: uppercase;
   color: var(--blue);
@@ -229,10 +258,24 @@ form input[type="submit"] {
 }
 .img-details img{
   width: 400px;
+  border-radius: 20px;
+  border: 5px solid var(--blue);
+  background-color: #e4f0ff;
+}
+.img-details p{
+  color: var(--blue);
+  margin-left: 10px;
+  font-size: 1.2rem;
+}
+.img-details p span{
+  color: var(--yellow);
+  font-weight: 600;
+  font-size: 1.4rem;
 }
 .details{
   display: flex;
   gap: 30px;
+  margin: 30px 0;
 }
 .info-details {
   flex: 1;

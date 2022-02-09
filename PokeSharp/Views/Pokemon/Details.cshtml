@@ -4,9 +4,7 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Detalhes</h2>
-<div>
+<div class="back-list">
     <a asp-action="Index">Voltar para Lista</a>
 </div>
 <div class="details">
@@ -18,7 +16,7 @@
             <img id="listpoke" src="@Model.Sprites.Other.OfficialArtwork.FrontDefault" />
         }
         <div>
-            @Model.BaseExp
+            <p>@Html.DisplayNameFor(mode => Model.BaseExp): <span>@Model.BaseExp</span></p>
         </div>
     </div>
     <div class="info-details">
@@ -89,7 +87,7 @@
                             float widht = 5f;
                             int[] points = new int[6];
                         } 
-                        @for(float i=1,scale=99; i <= 9; i++,scale-=11.7f)
+                        @for(float i=1,scale=99; i <= 9; i++,scale-=11.8f)
                         {
                             if(scale < 10){
                                 <polygon class="hex" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.1);transform-origin:center center;fill:#ffffff00;stroke:#aae1ff;stroke-width:@widht"></polygon>
@@ -102,19 +100,19 @@
                         {
                             points[count++] = item.BaseStat;
                         }
-                        <polygon points="@((85+points[0])+((170-points[0])/2)),@(190-points[0])
-                                         @((250-points[1])-((170-points[1])/2)),@(190-points[1])
-                                         @(170-points[2]),170
-                                         @((250-points[3])-((170-points[3])/2)),@(150+points[3])
-                                         @((85+points[4])+((170-points[4])/2)),@(150+points[4])
-                                         @(170+points[5]),170"
-                        style="transform: scale(1);transform-origin:center center;fill:#ffffff00;stroke:#3088F0;stroke-width:2;fill-rule:evenodd;" />
+                        <polygon points="@((85+points[0])+Math.Round((170-points[0])/2.01)),@(190-points[0])
+                                         @((250-points[1])-Math.Round((170-points[1])/2.5)),@(190-points[1])
+                                         @Math.Round((170-points[2])*1.09),170
+                                         @((250-points[3])-Math.Round((170-points[3])/2.5)),@Math.Round((150+points[3])*1.02)
+                                         @((85+points[4])+((170-points[4])/2)),@Math.Round((150+points[4])*1.02)
+                                         @Math.Round((170+points[5])/1.02),170"
+                        style="transform: scale(1);transform-origin:center center;fill:#3088F077;stroke:#3088F0;stroke-width:3;fill-rule:evenodd;" />
                         Sorry, your browser does not support inline SVG.
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div>
+<div class="back-list">
     <a asp-action="Index">Voltar para Lista</a>
 </div>

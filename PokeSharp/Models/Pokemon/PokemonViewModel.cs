@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PokeSharp.Models.Pokemon
 {
@@ -10,6 +11,7 @@ namespace PokeSharp.Models.Pokemon
         public IEnumerable<Abilities> Abilities { get; set; }
 
         [JsonProperty("base_experience")]
+        [Display(Name="Base Exp")]
         public int BaseExp { get; set;}
 
         [JsonProperty("forms")]
