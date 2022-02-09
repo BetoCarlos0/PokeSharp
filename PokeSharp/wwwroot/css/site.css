@@ -308,34 +308,30 @@ form input[type="submit"] {
   font-size: 1.6rem;
 }
 .stats .hp{
-  left: 175px;
-  top: -20px;
+  left: 285px;
+  top: -5px;
 }
 .stats .attack{
-  left: -50px;
-  top: 80px;
-  width: 50px;
-  line-break: normal;
+  left: 40px;
+  top: -5px;
 }
 .stats .defense{
   left: -65px;
-  top: 280px;
+  top: 170px;
   width: 50px;
   line-break: normal;
 }
 .stats .special-attack{
-  left: 130px;
-  top: 400px;
+  left: 0px;
+  top: 380px;
 }
 .stats .special-defense{
-  left: 410px;
-  top: 280px;
-  width: 50px;
-  line-break: normal;
+  left: 260px;
+  top: 380px;
 }
 .stats .speed{
   left: 410px;
-  top: 80px;
+  top: 170px;
   width: 50px;
   line-break: normal;
 }

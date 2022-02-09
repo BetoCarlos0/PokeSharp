@@ -83,33 +83,33 @@
                             <span>@item.BaseStat</span>
                         </p>                        
                     }
-                    <svg width="100%" height="400" viewBox="0 10 380 380">
+                    <svg width="400" height="100%" viewBox="-6 0 347 347">
                         @{
                             int count = 0;
-                            int widht = 5;
+                            float widht = 5f;
                             int[] points = new int[6];
                         } 
-                        @for(int i = 400, j = 0, k = 110, x=270; i > 200; i-=20, j+=20, k+=5, x-=10)
+                        @for(float i=1,scale=99; i <= 9; i++,scale-=11.7f)
                         {
-                            @* <polygon points="170,@j @(j+17),@k @(j+17),@x 170,@i @(i-17),@x @(i-17),@k"
-                            style="fill:#ffffff00;stroke:#dce1fd;stroke-width:@widht;fill-rule:evenodd;" />
-                            widht = 2; *@
-                            <polygon points="@(i-20),200 @x,@(i-10) @k,@(i-10) @j,200 @k,@(j+20) @x,@(j+20)" style="fill:#ffffff00;stroke:#dce1fd;stroke-width:@widht"></polygon>
-                            widht = 2;
+                            if(scale < 10){
+                                <polygon class="hex" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.1);transform-origin:center center;fill:#ffffff00;stroke:#aae1ff;stroke-width:@widht"></polygon>
+                            }else{
+                            <polygon class="hex" points="340,170 255,320 80,320 -5,170 80,20 255,20" style="transform: scale(0.@(Math.Round(scale)));transform-origin:center center;fill:#ffffff00;stroke:#aae1ff;stroke-width:@widht"></polygon>
+                            }
+                            widht = i;
                         }
                         @foreach(var item in Model.Stats)
                         {
                             points[count++] = item.BaseStat;
                         }
-                        @* <polygon points="170,@(170-points[0]) @(170-points[1]),@(220-points[1]-10) 20,220 170,@(170+points[3]) 280,220 280,80"
-                        style="fill:#ffffff00;stroke:#3088F0;stroke-width:2;fill-rule:evenodd;" /> *@
+                        <polygon points="@((85+points[0])+((170-points[0])/2)),@(190-points[0])
+                                         @((250-points[1])-((170-points[1])/2)),@(190-points[1])
+                                         @(170-points[2]),170
+                                         @((250-points[3])-((170-points[3])/2)),@(150+points[3])
+                                         @((85+points[4])+((170-points[4])/2)),@(150+points[4])
+                                         @(170+points[5]),170"
+                        style="transform: scale(1);transform-origin:center center;fill:#ffffff00;stroke:#3088F0;stroke-width:2;fill-rule:evenodd;" />
                         Sorry, your browser does not support inline SVG.
-                    </svg>
-                    <svg style="position:relative;bottom:350px;left:65px" id="color-fill" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="300" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    
-                    <polygon class="hex" points="300,150 225,280 75,280 0,150 75,20 225,20" style="fill:#ffffff00;stroke:#aae1ff;stroke-width:2"></polygon>
-                    
-                    </svg>
                 </div>
             </div>
         </div>
