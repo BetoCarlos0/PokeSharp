@@ -14,6 +14,8 @@ namespace PokeSharp.Models.Pokemon
 
         [JsonProperty("previous")]
         public Uri Previous { get; set; }
+        public int Amount { get; set; }
+        public int CurrentPage { get; set; }
 
         [JsonProperty("results")]
         public IEnumerable<PokemonViewModel> Pokemons { get; set; }

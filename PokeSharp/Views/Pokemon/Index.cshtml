@@ -25,13 +25,13 @@
     }
 </div>
 @{
-    var prevDisabled = (ViewBag.Page <= 1) ? "disabled" : "";
-    var nextDisabled = (ViewBag.Page * ViewBag.limit >= 1118) ? "disabled" : "";
+    var prevDisabled = (Model.CurrentPage <= 1) ? "disabled" : "";
+    var nextDisabled = (Model.CurrentPage * Model.Amount >= 1118) ? "disabled" : "";
 }
 <div class="pag @ViewBag.Hidden">
     <a asp-action="Index"
-    asp-route-page="@(ViewBag.Page - 1)" class="btn @prevDisabled">Anterior</a>
+    asp-route-page="@(Model.CurrentPage - 1)" class="btn @prevDisabled">Anterior</a>
 
     <a asp-action="Index"
-    asp-route-page="@(ViewBag.Page + 1)" class="btn @nextDisabled">Próximo</a>
+    asp-route-page="@(Model.CurrentPage + 1)" class="btn @nextDisabled">Próximo</a>
 </div>

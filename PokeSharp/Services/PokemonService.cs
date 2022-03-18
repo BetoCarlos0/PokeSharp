@@ -1,6 +1,6 @@
 ﻿namespace PokeSharp.Services
 {
-    public class AddInfosPoke
+    public class PokemonService
     {
 
     }

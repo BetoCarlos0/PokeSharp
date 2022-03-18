@@ -12,20 +12,19 @@ namespace PokeSharp.Controllers
 {
     public class PokemonController : Controller
     {
-        string UrlBase = "https://pokeapi.co/api/v2/";
+        const string URL_BASE= "https://pokeapi.co/api/v2/";
         public async Task<IActionResult> Index(string searchString, int? page)
         {
-            int limit = 36;
-            ViewBag.limit = limit;
+            PokeListViewModel pokeList = new PokeListViewModel();
+            pokeList.Amount = 36;
             ViewData["CurrentFilter"] = searchString;
 
-            PokeListViewModel pokeList = new PokeListViewModel();
 
             page = (page == null) ? 0 : (page - 1);
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(UrlBase +"pokemon?limit=1118&offset=0"));
+                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(URL_BASE + "pokemon?limit=1118&offset=0"));
 
                 pokeList.Pokemons = pokeList.Pokemons.Where(s => s.Name.Contains(searchString));
 
@@ -37,9 +36,9 @@ namespace PokeSharp.Controllers
             }
             else
             {
-                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(UrlBase + "pokemon?offset=" + page * limit + "&limit=" + limit));
+                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(URL_BASE + "pokemon?offset=" + page * pokeList.Amount + "&limit=" + pokeList.Amount));
 
-                int count = (int)page * limit;
+                int count = (int)page * pokeList.Pokemons.Count();
                 int skip = 9102 + count;
                 foreach (var item in pokeList.Pokemons)
                 {
@@ -56,8 +55,7 @@ namespace PokeSharp.Controllers
                     }
                 }
             }
-            
-            ViewBag.Page = page + 1;
+            pokeList.CurrentPage = (int)(page + 1);
 
             return View(pokeList);
         }
@@ -66,9 +64,7 @@ namespace PokeSharp.Controllers
         {
             if (id == null) return NotFound();
 
-            PokemonViewModel pokemon = new PokemonViewModel();
-
-            pokemon = JsonConvert.DeserializeObject<PokemonViewModel>(await GetRresponse(UrlBase + "pokemon/" + id));
+            PokemonViewModel pokemon = JsonConvert.DeserializeObject<PokemonViewModel>(await GetRresponse(URL_BASE + "pokemon/" + id));
 
             return View(pokemon);
         }
