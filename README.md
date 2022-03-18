@@ -1,5 +1,5 @@
 # PokeSharp
-Consumo de API v2 PokéAPI para fins de estudos
+Consumo de API v2 PokéAPI com RestSharp para fins de estudos
 
 #### Pokemons
 <img src="https://user-images.githubusercontent.com/38302212/153291285-ac41f2c7-12fd-4358-8740-07394b49b945.PNG"/>
