@@ -7,14 +7,27 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Net;
+using PokeSharp.Services;
 
 namespace PokeSharp.Controllers
 {
     public class PokemonController : Controller
     {
         const string URL_BASE= "https://pokeapi.co/api/v2/";
+
+        /*private readonly IPokemonService _pokemonService;
+
+        public PokemonController(IPokemonService pokemonService)
+        {
+            _pokemonService = pokemonService;
+        }*/
+
         public async Task<IActionResult> Index(string searchString, int? page)
         {
+            //var pokemon = await _pokemonService.List();
+
+            //return View(pokemon);
+            
             PokeListViewModel pokeList = new PokeListViewModel();
             pokeList.Amount = 36;
             ViewData["CurrentFilter"] = searchString;
@@ -58,6 +71,7 @@ namespace PokeSharp.Controllers
             pokeList.CurrentPage = (int)(page + 1);
 
             return View(pokeList);
+            
         }
 
         public async Task<IActionResult> Details(int? id)

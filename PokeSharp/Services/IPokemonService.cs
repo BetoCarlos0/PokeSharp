@@ -1,11 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using PokeSharp.Models.Pokemon;
+using Refit;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PokeSharp.Services
 {
     public interface IPokemonService
     {
-        public string GetImages(string response);
-        int GetIdPoke(string response);
-        public Task<string> GetRresponse(string url);
+        [Get("/pokemon?offset=0&limit=36")]
+        Task<List<PokeListViewModel>> List();
     }
 }
