@@ -1,23 +1,36 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PokeSharp.Models.Pokemon
 {
     public class PokeListViewModel
     {
-        [JsonProperty("count")]
-        public long Count { get; set; }
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
 
-        [JsonProperty("next")]
+        [JsonPropertyName("next")]
         public Uri Next { get; set; }
 
-        [JsonProperty("previous")]
+        [JsonPropertyName("previous")]
         public Uri Previous { get; set; }
+
+        [JsonPropertyName("results")]
+        public IEnumerable<Pokemons> Pokemons { get; set; }
+
         public int Amount { get; set; }
         public int CurrentPage { get; set; }
+    }
+    public class Pokemons
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-        [JsonProperty("results")]
-        public IEnumerable<PokemonViewModel> Pokemons { get; set; }
+        [JsonPropertyName("url")]
+        public string Url { get; set; }
+
+        public string Img { get; set; }
+
+        public int Id { get; set; }
     }
 }

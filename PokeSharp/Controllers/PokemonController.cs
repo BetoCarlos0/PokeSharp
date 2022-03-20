@@ -1,34 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PokeSharp.Models.Pokemon;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using PokeSharp.Services;
 using System;
 using System.Linq;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace PokeSharp.Controllers
 {
     public class PokemonController : Controller
     {
-        const string URL_BASE= "https://pokeapi.co/api/v2/";
-        public async Task<IActionResult> Index(string searchString, int? page)
+        private readonly IPokemonService _pokemonService;
+        public PokemonController(IPokemonService pokemonService)
+        {
+            _pokemonService = pokemonService;
+        }
+
+        public async Task<IActionResult> Index(string searchString, int page)
         {
             PokeListViewModel pokeList = new PokeListViewModel();
             pokeList.Amount = 36;
-            ViewData["CurrentFilter"] = searchString;
 
-
-            page = (page == null) ? 0 : (page - 1);
+            if (page != 0) page -= 1;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(URL_BASE + "pokemon?limit=1118&offset=0"));
+                pokeList = await _pokemonService.ListAll();
 
                 pokeList.Pokemons = pokeList.Pokemons.Where(s => s.Name.Contains(searchString));
 
-                pokeList = await GetImageSr(pokeList);
+                foreach (var item in pokeList.Pokemons)
+                {
+                    var result = await _pokemonService.GetName(item.Name);
+
+                    item.Id = result.Id;
+                    item.Img = result.Sprites.Other.OfficialArtwork.FrontDefault;
+                }
 
                 ViewBag.Hidden = "d-none";
 
@@ -36,7 +42,7 @@ namespace PokeSharp.Controllers
             }
             else
             {
-                pokeList = JsonConvert.DeserializeObject<PokeListViewModel>(await GetRresponse(URL_BASE + "pokemon?offset=" + page * pokeList.Amount + "&limit=" + pokeList.Amount));
+                pokeList = await _pokemonService.List(page * pokeList.Amount);
 
                 int count = (int)page * pokeList.Pokemons.Count();
                 int skip = 9102 + count;
@@ -60,54 +66,11 @@ namespace PokeSharp.Controllers
             return View(pokeList);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null) return NotFound();
-
-            PokemonViewModel pokemon = JsonConvert.DeserializeObject<PokemonViewModel>(await GetRresponse(URL_BASE + "pokemon/" + id));
-
-            return View(pokemon);
-        }
-        public async Task<PokeListViewModel> GetImageSr(PokeListViewModel pokemon)
-        {
-            foreach (var item in pokemon.Pokemons)
-            {
-                string response = await GetRresponse("https://pokeapi.co/api/v2/pokemon/" + item.Name);
-
-                item.Img = GetImageUrl(response);
-                item.Id = GetIdPoke(response);
-            }
-
-            string GetImageUrl(string response)
-            {
-                JObject jsonO = JObject.Parse(response);
-                string json = (string)jsonO.SelectToken("sprites.other.official-artwork.front_default");
-                
-                return json;
-            }
-
-            int GetIdPoke(string response)
-            {
-                JObject jsonO = JObject.Parse(response);
-                int json = (int)jsonO.SelectToken("id");
-
-                return json;
-            }
-            return pokemon;
-        }
-
-        public async Task<string> GetRresponse(string url)
-        {
-            RestClient client = new RestClient(url);
-            RestRequest request = new RestRequest();
-            RestResponse response = await client.ExecuteAsync(request);
-
-            if (response.ContentLength <= -1 || response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                ModelState.AddModelError("", "Erro!");
-            }
-
-            return response.Content;  
+            var result = await _pokemonService.GetId(id);
+            
+            return View(result);
         }
     }
 }
