@@ -9,7 +9,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Refit" Version="6.2.16" />
     <PackageReference Include="Refit.HttpClientFactory" Version="6.2.16" />
-    <PackageReference Include="RestSharp" Version="107.1.2" />
   </ItemGroup>
 
 </Project>

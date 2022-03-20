@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using PokeSharp.Services;
 using Refit;
 using System;
-using System.IO;
-using System.Net.Http;
 
 namespace PokeSharp
 {
@@ -26,15 +22,12 @@ namespace PokeSharp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
             services.AddRazorPages();
-            /*var clientHandler = new HttpClientHandler();
 
-            services.AddRefitClient<IPokemonService>()
-               .ConfigureHttpClient(c =>
-               {
-                   c.BaseAddress = new Uri(Configuration.GetValue<string>("UrlPokeApi"));
-               }).ConfigurePrimaryHttpMessageHandler(c => clientHandler);*/
+            services.AddRefitClient<IPokemonService>().ConfigureHttpClient(c =>
+            {
+                c.BaseAddress = new Uri(Configuration.GetValue<string>("UrlPokeApi"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
