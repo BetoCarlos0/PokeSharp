@@ -68,9 +68,7 @@ namespace PokeSharp.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var result = await _pokemonService.GetId(id);
-            
-            return View(result);
+            return View(await _pokemonService.GetId(id));
         }
     }
 }
